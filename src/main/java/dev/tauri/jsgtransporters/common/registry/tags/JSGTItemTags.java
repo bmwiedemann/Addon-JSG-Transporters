@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 
 public class JSGTItemTags {
     public static final TagKey<Item> RINGS_CAPACITORS = tag("rings_capacitors");
+    public static final TagKey<Item> LANTEAN_TRANSPORTER_CAPACITORS = tag("lantean_transporter_capacitors");
 
     private static TagKey<Item> tag(String name) {
         return ItemTags.create(JSGMapping.rl(JSGTransporters.MOD_ID, name));

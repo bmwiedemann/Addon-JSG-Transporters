@@ -1,13 +1,32 @@
 package dev.tauri.jsgtransporters.common.blockentity.rings;
 
-import dev.tauri.jsg.core.common.blockentity.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.StreamSupport;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import dev.tauri.jsg.core.common.blockentity.BEStateProvider;
+import dev.tauri.jsg.core.common.blockentity.IAddressProvider;
+import dev.tauri.jsg.core.common.blockentity.ILinkable;
+import dev.tauri.jsg.core.common.blockentity.JSGBlockEntity;
+import dev.tauri.jsg.core.common.blockentity.ScheduledTaskExecutorInterface;
 import dev.tauri.jsg.core.common.chunkloader.ChunkManager;
 import dev.tauri.jsg.core.common.config.JSGCoreConfig;
 import dev.tauri.jsg.core.common.config.ingame.BEConfig;
 import dev.tauri.jsg.core.common.config.ingame.IConfigurable;
 import dev.tauri.jsg.core.common.config.ingame.option.ConfigOptionsHolder;
 import dev.tauri.jsg.core.common.config.json.dimension.JSGDimensionConfig;
-import dev.tauri.jsg.core.common.entity.*;
+import dev.tauri.jsg.core.common.entity.BiomeOverlayInstance;
+import dev.tauri.jsg.core.common.entity.ScheduledTask;
+import dev.tauri.jsg.core.common.entity.ScheduledTaskType;
+import dev.tauri.jsg.core.common.entity.State;
+import dev.tauri.jsg.core.common.entity.StateType;
 import dev.tauri.jsg.core.common.helper.BlockPosHelper;
 import dev.tauri.jsg.core.common.helper.LinkingHelper;
 import dev.tauri.jsg.core.common.integration.ComputerDeviceHolder;
@@ -27,14 +46,23 @@ import dev.tauri.jsg.core.common.symbol.SymbolInterface;
 import dev.tauri.jsg.core.common.symbol.SymbolType;
 import dev.tauri.jsg.core.common.symbol.address.IAddress;
 import dev.tauri.jsg.core.common.symbol.pointoforigin.PointOfOrigin;
-import dev.tauri.jsg.core.common.util.*;
+import dev.tauri.jsg.core.common.util.EnumKeyInterface;
+import dev.tauri.jsg.core.common.util.EnumKeyMap;
+import dev.tauri.jsg.core.common.util.IUpgrade;
+import dev.tauri.jsg.core.common.util.JSGAxisAlignedBB;
+import dev.tauri.jsg.core.common.util.JSGItemStackHandler;
 import dev.tauri.jsgtransporters.JSGTransporters;
 import dev.tauri.jsgtransporters.common.blockentity.controller.AbstractRingsCPBE;
 import dev.tauri.jsgtransporters.common.config.ingame.RingsConfigOptions;
 import dev.tauri.jsgtransporters.common.energy.EnergyRequiredToOperateRings;
 import dev.tauri.jsgtransporters.common.entity.RingsAddressData;
 import dev.tauri.jsgtransporters.common.helpers.TeleportHelper;
-import dev.tauri.jsgtransporters.common.registry.*;
+import dev.tauri.jsgtransporters.common.registry.JSGTItems;
+import dev.tauri.jsgtransporters.common.registry.JSGTNotebookPageTypes;
+import dev.tauri.jsgtransporters.common.registry.JSGTScheduledTaskTypes;
+import dev.tauri.jsgtransporters.common.registry.JSGTSoundEvents;
+import dev.tauri.jsgtransporters.common.registry.JSGTSymbolTypes;
+import dev.tauri.jsgtransporters.common.registry.JSGTSymbolUsages;
 import dev.tauri.jsgtransporters.common.registry.tags.JSGTBlockTags;
 import dev.tauri.jsgtransporters.common.registry.tags.JSGTItemTags;
 import dev.tauri.jsgtransporters.common.rings.Rings;
@@ -71,9 +99,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.TargetPoint;
-
-import java.util.*;
-import java.util.stream.StreamSupport;
 
 public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, ILinkable<AbstractRingsCPBE>, IConfigurable, IAddressProvider, ComputerDeviceProvider, ScheduledTaskExecutorInterface, BEStateProvider {
     public RingsAbstractBE(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
