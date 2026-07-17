@@ -12,11 +12,11 @@
       "tag": "forge:plates/naquadah_alloy"
     },
     "I": {
-      "tag": "forge:ingots/titanium"
+      "tag": "forge:ingots/naquadah_alloy"
     }
   },
   "result": {
-    "item": "jsg_transporters:fragment_rings_goauld",
+    "id": "jsg_transporters:fragment_rings_ancient",
     "count": 1
   }
 }

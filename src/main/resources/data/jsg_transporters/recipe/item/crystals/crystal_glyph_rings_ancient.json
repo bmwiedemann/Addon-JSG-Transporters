@@ -3,23 +3,23 @@
   "group": "JSG Transporters",
   "category": "misc",
   "pattern": [
-    "WPW",
-    "GGG",
-    "WPW"
+    "W W",
+    "GWG",
+    "WBW"
   ],
   "key": {
     "W": {
       "tag": "forge:glass_panes/white"
     },
-    "P": {
-      "tag": "forge:glass_panes/purple"
+    "B": {
+      "tag": "forge:glass_panes/light_blue"
     },
     "G": {
-      "tag": "forge:gems/white_small"
+      "tag": "forge:gems/blue_small"
     }
   },
   "result": {
-    "item": "jsg_transporters:crystal_glyph_rings_ori",
+    "id": "jsg_transporters:crystal_glyph_rings_ancient",
     "count": 1
   }
 }

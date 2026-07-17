@@ -3,23 +3,23 @@
   "group": "JSG Transporters",
   "category": "misc",
   "pattern": [
-    "EGE",
-    "ECE",
-    "EGE"
+    "BCB",
+    "SBS",
+    "BBB"
   ],
   "key": {
-    "E": {
-      "tag": "forge:gems/emerald"
-    },
-    "G": {
-      "tag": "forge:ingots/gold"
+    "B": {
+      "tag": "minecraft:stone_buttons"
     },
     "C": {
       "item": "jsg_core:circuit_control_crystal"
+    },
+    "S": {
+      "tag": "forge:stone"
     }
   },
   "result": {
-    "item": "jsg_transporters:goauld_controller_buttons",
+    "id": "jsg_transporters:ancient_controller_buttons",
     "count": 1
   }
 }

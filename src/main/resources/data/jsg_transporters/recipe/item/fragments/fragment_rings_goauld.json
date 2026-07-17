@@ -9,14 +9,14 @@
   ],
   "key": {
     "P": {
-      "tag": "forge:plates/trinium"
+      "tag": "forge:plates/naquadah_alloy"
     },
     "I": {
-      "tag": "forge:ingots/naquadah_alloy"
+      "tag": "forge:ingots/titanium"
     }
   },
   "result": {
-    "item": "jsg_transporters:fragment_rings_ori",
+    "id": "jsg_transporters:fragment_rings_goauld",
     "count": 1
   }
 }

@@ -3,23 +3,23 @@
   "group": "JSG Transporters",
   "category": "misc",
   "pattern": [
-    "ICI",
-    "GGG",
-    "GGG"
+    "EGE",
+    "ECE",
+    "EGE"
   ],
   "key": {
-    "I": {
-      "tag": "forge:ingots/gold"
+    "E": {
+      "tag": "forge:gems/emerald"
     },
     "G": {
-      "tag": "forge:gems/blue_small"
+      "tag": "forge:ingots/gold"
     },
     "C": {
       "item": "jsg_core:circuit_control_crystal"
     }
   },
   "result": {
-    "item": "jsg_transporters:ori_controller_buttons",
+    "id": "jsg_transporters:goauld_controller_buttons",
     "count": 1
   }
 }

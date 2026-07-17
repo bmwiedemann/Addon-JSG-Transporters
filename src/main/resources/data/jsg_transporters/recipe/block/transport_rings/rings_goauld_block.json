@@ -12,7 +12,7 @@
       "item": "jsg_core:circuit_control_crystal"
     },
     "F": {
-      "item": "jsg_transporters:fragment_rings_ori"
+      "item": "jsg_transporters:fragment_rings_goauld"
     },
     "N": {
       "item": "jsg_core:circuit_control_naquadah"
@@ -25,7 +25,7 @@
     }
   },
   "result": {
-    "item": "jsg_transporters:rings_ori_block",
+    "id": "jsg_transporters:rings_goauld_block",
     "count": 1
   }
 }
