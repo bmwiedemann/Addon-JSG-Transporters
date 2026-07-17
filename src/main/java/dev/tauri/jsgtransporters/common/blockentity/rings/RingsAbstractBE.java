@@ -193,6 +193,13 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         return energyTransferredLastTick;
     }
 
+    @Override
+    public JSGItemStackHandler getItemHandler() {
+        // Return the backing inventory directly; the IUpgradable default queries the
+        // block capability, whose registered provider calls this method (-> recursion).
+        return inventory;
+    }
+
     public LargeEnergyStorage getEnergyStorage() {
         return energyStorage;
     }
