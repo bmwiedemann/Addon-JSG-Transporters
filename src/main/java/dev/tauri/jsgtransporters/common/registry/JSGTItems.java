@@ -4,7 +4,7 @@ import dev.tauri.jsg.core.common.item.JSGItem;
 import dev.tauri.jsg.core.common.registry.CoreTabs;
 import dev.tauri.jsgtransporters.Constants;
 import dev.tauri.jsgtransporters.common.blockentity.rings.RingsAbstractBE;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 
 import java.util.List;
 

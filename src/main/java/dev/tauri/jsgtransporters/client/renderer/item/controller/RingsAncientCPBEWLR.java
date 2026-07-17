@@ -1,5 +1,6 @@
 package dev.tauri.jsgtransporters.client.renderer.item.controller;
 
+import dev.tauri.jsg.core.mapping.JSGMapping;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import dev.tauri.jsg.core.client.renderer.AbstractItemBEWLR;
@@ -13,7 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RingsAncientCPBEWLR extends AbstractItemBEWLR {
-    public static final ResourceLocation SYMBOLS_TEX = new ResourceLocation(JSGTransporters.MOD_ID, "textures/tesr/rings/controller/ancient/button_0.png");
+    public static final ResourceLocation SYMBOLS_TEX = JSGMapping.rl(JSGTransporters.MOD_ID, "textures/tesr/rings/controller/ancient/button_0.png");
 
     // TODO(Mine): Fix transforms
     @Override

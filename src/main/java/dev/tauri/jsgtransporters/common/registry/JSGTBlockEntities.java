@@ -15,7 +15,7 @@ import dev.tauri.jsgtransporters.common.blockentity.rings.RingsAncientBE;
 import dev.tauri.jsgtransporters.common.blockentity.rings.RingsGoauldBE;
 import dev.tauri.jsgtransporters.common.blockentity.rings.RingsOriBE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 
 import java.util.List;
 

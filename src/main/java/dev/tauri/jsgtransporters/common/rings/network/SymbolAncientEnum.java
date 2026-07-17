@@ -1,5 +1,6 @@
 package dev.tauri.jsgtransporters.common.rings.network;
 
+import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsg.core.client.model.IModelLoader;
 import dev.tauri.jsg.core.client.screen.tab.ITab;
 import dev.tauri.jsg.core.client.screen.tab.tabs.TabAddress;
@@ -54,8 +55,8 @@ public enum SymbolAncientEnum implements SymbolInterface {
 
         this.englishName = englishName;
         this.translationKey = "glyph.jsg_transporters.transportrings.ancient." + englishName.toLowerCase().replace(" ", "_");
-        this.iconResource = new ResourceLocation(JSGTransporters.MOD_ID, "textures/gui/symbol/rings/ancient/" + englishName.toLowerCase() + ".png");
-        this.modelResource = new ResourceLocation(JSGTransporters.MOD_ID, "models/tesr/rings/controller/ancient/button_" + (id + 1) + ".obj");
+        this.iconResource = JSGMapping.rl(JSGTransporters.MOD_ID, "textures/gui/symbol/rings/ancient/" + englishName.toLowerCase() + ".png");
+        this.modelResource = JSGMapping.rl(JSGTransporters.MOD_ID, "models/tesr/rings/controller/ancient/button_" + (id + 1) + ".obj");
     }
 
     @Override
@@ -96,11 +97,6 @@ public enum SymbolAncientEnum implements SymbolInterface {
     @Override
     public ResourceLocation getModelResource(IPointOfOriginType iPointOfOriginType, @Nullable PointOfOrigin pointOfOrigin, String s) {
         return modelResource;
-    }
-
-    @Override
-    public String localize() {
-        return I18n.format(translationKey);
     }
 
     @Override
@@ -146,7 +142,7 @@ public enum SymbolAncientEnum implements SymbolInterface {
 
         @Override
         public ITab.ITabBuilder finalizeAddressTab(ITab.ITabBuilder builder) {
-            return builder.setTexture(new ResourceLocation(JSGTransporters.MOD_ID, "textures/gui/container_transportrings.png"), 512)
+            return builder.setTexture(JSGMapping.rl(JSGTransporters.MOD_ID, "textures/gui/container_transportrings.png"), 512)
                     .setBackgroundTextureLocation(176, 0)
                     .setIconRenderPos(0, 6)
                     .setIconSize(22, 22)

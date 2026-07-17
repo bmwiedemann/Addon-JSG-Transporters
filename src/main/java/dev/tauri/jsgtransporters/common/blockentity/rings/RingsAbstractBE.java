@@ -65,12 +65,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.TargetPoint;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import dev.tauri.jsg.core.common.packet.TargetPoint;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -93,7 +90,7 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             Item item = stack.getItem();
-            boolean isItemCapacitor = stack.is(JSGTItemTags.RINGS_CAPACITORS) && stack.getCapability(ForgeCapabilities.ENERGY).isPresent();
+            boolean isItemCapacitor = stack.is(JSGTItemTags.RINGS_CAPACITORS) && stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
             return switch (slot) {
                 case 0, 1, 2, 3 ->
                         RingsUpgradeEnum.contains(item) && !hasUpgrade(item) && RingsUpgradeEnum.valueOf(item).slot == slot;
@@ -228,9 +225,9 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
                 ItemStack stack = inventory.getStackInSlot(i);
 
                 if (!stack.isEmpty()) {
-                    LazyOptional<IEnergyStorage> capCapability = stack.getCapability(ForgeCapabilities.ENERGY, null);
-                    if (capCapability.isPresent() && capCapability.resolve().isPresent()) {
-                        energyStorage.addStorage(capCapability.resolve().get());
+                    IEnergyStorage capCapability = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+                    if (capCapability != null) {
+                        energyStorage.addStorage(capCapability);
                     }
                 }
             }
@@ -611,7 +608,7 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
     }
 
     @Override
-    public PacketDistributor.TargetPoint getTargetPoint() {
+    public TargetPoint getTargetPoint() {
         return targetPoint;
     }
 
@@ -628,9 +625,8 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         return rendererState;
     }
 
-    @Override
     public AABB getRenderBoundingBox() {
-        return INFINITE_EXTENT_AABB;
+        return AABB.INFINITE;
     }
 
     @Override
@@ -685,7 +681,7 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
     // ------------------------------------------------------------------------
     // NBT
     @Override
-    public void saveAdditional(@Nonnull CompoundTag compound) {
+    public void saveAdditional(@Nonnull CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         for (var address : addressMap.values()) {
             compound.put("address_" + address.getSymbolType(), address.serializeNBT());
         }
@@ -698,7 +694,7 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         compound.put("scheduledTasks", ScheduledTask.serializeList(scheduledTasks));
 
         compound.put("config", getConfig().serializeNBT());
-        compound.put("itemHandler", inventory.serializeNBT());
+        compound.put("itemHandler", inventory.serializeNBT(registries));
         compound.putInt("verticalOffset", verticalOffset);
 
         if (energyToOperate != null) {
@@ -710,12 +706,12 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         if (lastDialedAddress != null)
             compound.put("lastDialedAddress", lastDialedAddress.serializeNBT());
 
-        super.saveAdditional(compound);
+        super.saveAdditional(compound, registries);
     }
 
     @Override
-    public void load(@Nonnull CompoundTag compound) {
-        super.load(compound);
+    public void loadAdditional(@Nonnull CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(compound, registries);
         for (SymbolType<?> symbolType : SymbolType.values(JSGTSymbolUsages.RINGS.get())) {
             if (compound.contains("address_" + symbolType))
                 addressMap.put(symbolType, new RingsAddress(compound.getCompound("address_" + symbolType)));
@@ -729,7 +725,7 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
         ScheduledTask.deserializeList(compound.getCompound("scheduledTasks"), scheduledTasks, this);
 
         getConfig().deserializeNBT(compound.getCompound("config"));
-        inventory.deserializeNBT(compound.getCompound("itemHandler"));
+        inventory.deserializeNBT(registries, compound.getCompound("itemHandler"));
         verticalOffset = compound.getInt("verticalOffset");
 
         if (compound.contains("energyToOperate_start")) {
@@ -936,20 +932,6 @@ public abstract class RingsAbstractBE extends JSGBlockEntity implements Rings, I
     @Override
     public String getDeviceType() {
         return "RINGS";
-    }
-
-    @Override
-    public @Nonnull <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
-        if (capability == ForgeCapabilities.ITEM_HANDLER) {
-            return LazyOptional.of(() -> inventory).cast();
-        }
-        if (capability == ForgeCapabilities.ENERGY) {
-            return LazyOptional.of(this::getEnergyStorage).cast();
-        }
-        var computerCaps = getDeviceHolder().getOrCreateDeviceBasedOnCap(capability);
-        if (computerCaps.isPresent())
-            return computerCaps;
-        return super.getCapability(capability, facing);
     }
 
     public EnergyRequiredToOperateRings energyToOperate;

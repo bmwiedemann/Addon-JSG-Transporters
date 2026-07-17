@@ -1,5 +1,6 @@
 package dev.tauri.jsgtransporters.client.screen;
 
+import dev.tauri.jsg.core.mapping.JSGMapping;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.tauri.jsg.core.client.loader.texture.Texture;
 import dev.tauri.jsg.core.client.screen.tab.ITab;
@@ -30,8 +31,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -39,7 +40,7 @@ import java.util.*;
 import static dev.tauri.jsg.core.client.screen.util.GuiHelper.*;
 
 public class RingsGui extends TabbedContainerScreen<RingsContainer> {
-    public static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(JSGTransporters.MOD_ID, "textures/gui/container_transportrings.png");
+    public static final ResourceLocation BACKGROUND_TEXTURE = JSGMapping.rl(JSGTransporters.MOD_ID, "textures/gui/container_transportrings.png");
     private final Map<SymbolType<?>, TabAddress> addressTabs = new LinkedHashMap<>();
 
     private final BlockPos pos;
@@ -142,7 +143,7 @@ public class RingsGui extends TabbedContainerScreen<RingsContainer> {
         int energyBarMaxWidth = 156;
         int currentIndex = 3;
         for (int i = 4; i < 7; i++) {
-            Optional<IEnergyStorage> energyStorage = menu.getSlot(i).getItem().getCapability(ForgeCapabilities.ENERGY, null).resolve();
+            Optional<IEnergyStorage> energyStorage = Optional.ofNullable(menu.getSlot(i).getItem().getCapability(Capabilities.EnergyStorage.ITEM));
             if (energyStorage.isPresent())
                 continue;
             energyBarMaxWidth -= 39;
@@ -207,7 +208,7 @@ public class RingsGui extends TabbedContainerScreen<RingsContainer> {
     public void render(@Nonnull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.disableDepthTest();
 
-        renderTransparentBackground(graphics, this);
+        renderTransparentBackground(graphics);
 
         boolean hasAddressUpgrade = false;
 
@@ -232,12 +233,12 @@ public class RingsGui extends TabbedContainerScreen<RingsContainer> {
         }
         configTab.setVisible(menu.hasCreative);
 
-        LargeEnergyStorage energyStorageInternal = (LargeEnergyStorage) menu.ringsTile.getCapability(ForgeCapabilities.ENERGY, null).resolve().orElseThrow();
+        LargeEnergyStorage energyStorageInternal = menu.ringsTile.getEnergyStorage();
         energyStorageInternal.clearStorages();
         energyStoredInternally = energyStorageInternal.getTrueEnergyStored();
 
         for (int i = 4; i < 7; i++) {
-            Optional<IEnergyStorage> energyStorage = menu.getSlot(i).getItem().getCapability(ForgeCapabilities.ENERGY, null).resolve();
+            Optional<IEnergyStorage> energyStorage = Optional.ofNullable(menu.getSlot(i).getItem().getCapability(Capabilities.EnergyStorage.ITEM));
 
             if (energyStorage.isEmpty())
                 continue;

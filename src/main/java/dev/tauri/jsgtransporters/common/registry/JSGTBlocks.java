@@ -8,11 +8,11 @@ import dev.tauri.jsgtransporters.common.block.rings.RingsAncient;
 import dev.tauri.jsgtransporters.common.block.rings.RingsGoauld;
 import dev.tauri.jsgtransporters.common.block.rings.RingsOri;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.JSGDeferredRegister;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 
 public class JSGTBlocks {
-    private static final DeferredRegister<Block> REGISTER = JSGTransporters.REGISTRY_HELPER.block();
+    private static final JSGDeferredRegister<Block> REGISTER = JSGTransporters.REGISTRY_HELPER.block();
 
     public static final RegistryObject<Block> RINGS_ANCIENT = REGISTER.register("rings_ancient_block", RingsAncient::new);
     public static final RegistryObject<Block> RINGS_GOAULD = REGISTER.register("rings_goauld_block", RingsGoauld::new);

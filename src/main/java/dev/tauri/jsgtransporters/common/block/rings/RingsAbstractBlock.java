@@ -31,8 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -59,14 +58,15 @@ public abstract class RingsAbstractBlock extends TickableBEBlock implements ITab
 
     @Override
     @ParametersAreNonnullByDefault
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
-        super.playerWillDestroy(level, pos, blockState, player);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
+        BlockState result = super.playerWillDestroy(level, pos, blockState, player);
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof RingsAbstractBE rings) {
                 rings.onBroken();
             }
         }
+        return result;
     }
 
     @Override
@@ -93,7 +93,7 @@ public abstract class RingsAbstractBlock extends TickableBEBlock implements ITab
                 page.setTag(nbt);
                 player.addItem(page);*/
                 if (player instanceof ServerPlayer sp) {
-                    NetworkHooks.openScreen(sp, new SimpleMenuProvider((id, pInv, p) -> new RingsContainer(id, pInv, rings), Component.empty()), pos);
+                    sp.openMenu(new SimpleMenuProvider((id, pInv, p) -> new RingsContainer(id, pInv, rings), Component.empty()), pos);
                 }
                 return InteractionResult.SUCCESS;
             }

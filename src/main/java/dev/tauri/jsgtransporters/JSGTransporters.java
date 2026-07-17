@@ -9,18 +9,16 @@ import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsgtransporters.client.ClientConstants;
 import dev.tauri.jsgtransporters.common.config.JSGTConfig;
 import dev.tauri.jsgtransporters.common.integration.cctweaked.CCDevicesRegistry;
-import dev.tauri.jsgtransporters.common.integration.oc2.OCDevicesRegistry;
 import dev.tauri.jsgtransporters.common.packet.JSGTPacketHandler;
 import dev.tauri.jsgtransporters.common.registry.JSGTRegistriesInit;
 import dev.tauri.jsgtransporters.common.rings.network.RingsNetwork;
 import dev.tauri.jsgtransporters.common.worldgen.JSGTTemplatePoolInjectors;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +32,11 @@ public class JSGTransporters implements JSGAddon {
     public static Logger logger;
 
     public static String MOD_VERSION = "";
-    public static final String MC_VERSION = "1.20.1";
+    public static final String MC_VERSION = "1.21.1";
 
     public static final RegistryHelper REGISTRY_HELPER = new RegistryHelper(JSGTransporters.MOD_ID);
 
-    public JSGTransporters() {
+    public JSGTransporters(net.neoforged.bus.api.IEventBus eventBus) {
         logger = new LoggerWrapper("[jsg transporters] ", LoggerFactory.getLogger(MOD_NAME));
 
         ModList.get().getModContainerById(MOD_ID).ifPresentOrElse(container -> MOD_VERSION = MC_VERSION + "-" + container.getModInfo().getVersion().getQualifier(), () -> {
@@ -47,8 +45,6 @@ public class JSGTransporters implements JSGAddon {
 
         JSGTConfig.load();
         JSGTConfig.register();
-
-        var eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         Constants.init();
         JSGTRegistriesInit.init();
@@ -59,9 +55,9 @@ public class JSGTransporters implements JSGAddon {
 
         JSGTRegistriesInit.register(eventBus);
 
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
 
-        Integrations.OC2.addOnLoad(OCDevicesRegistry::load);
+        // OC2 has no 1.21.x build; integration excluded at compile time (enable_oc2)
         Integrations.CCT.addOnLoad(CCDevicesRegistry::load);
 
         JSGAddons.registerAddon(this);

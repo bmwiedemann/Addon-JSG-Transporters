@@ -23,7 +23,7 @@ public class RingsNetwork extends SavedData {
 
     public void register(@Nonnull DimensionDataStorage storage) {
         INSTANCE = this;
-        storage.computeIfAbsent(INSTANCE::load, () -> INSTANCE, DATA_NAME);
+        storage.computeIfAbsent(new Factory<>(() -> INSTANCE, (tag, registries) -> INSTANCE.load(tag), null), DATA_NAME);
     }
 
     public RingsNetwork() {
@@ -177,7 +177,7 @@ public class RingsNetwork extends SavedData {
     }
 
     @Override
-    public @Nonnull CompoundTag save(@Nonnull CompoundTag compound) {
+    public @Nonnull CompoundTag save(@Nonnull CompoundTag compound, @Nonnull net.minecraft.core.HolderLookup.Provider registries) {
         JSGTransporters.logger.info("Saving RINGS NETWORK: Started");
         ListTag ringsTagList = new ListTag();
 

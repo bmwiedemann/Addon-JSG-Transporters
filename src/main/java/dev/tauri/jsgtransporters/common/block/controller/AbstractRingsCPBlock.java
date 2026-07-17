@@ -28,7 +28,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -111,14 +111,15 @@ public abstract class AbstractRingsCPBlock extends TickableBEBlock implements IT
 
     @Override
     @ParametersAreNonnullByDefault
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
-        super.playerWillDestroy(level, pos, blockState, player);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
+        BlockState result = super.playerWillDestroy(level, pos, blockState, player);
         if (!level.isClientSide()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof AbstractRingsCPBE cp) {
                 cp.onBroken();
             }
         }
+        return result;
     }
 
     @Override

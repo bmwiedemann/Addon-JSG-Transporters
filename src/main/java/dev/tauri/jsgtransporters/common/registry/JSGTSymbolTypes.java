@@ -5,7 +5,7 @@ import dev.tauri.jsgtransporters.JSGTransporters;
 import dev.tauri.jsgtransporters.common.rings.network.SymbolAncientEnum;
 import dev.tauri.jsgtransporters.common.rings.network.SymbolGoauldEnum;
 import dev.tauri.jsgtransporters.common.rings.network.SymbolOriEnum;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 
 public class JSGTSymbolTypes {
     public static final RegistryObject<SymbolType<SymbolGoauldEnum>> GOAULD = JSGTransporters.REGISTRY_HELPER.symbolType()

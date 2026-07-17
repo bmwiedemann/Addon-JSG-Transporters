@@ -7,7 +7,7 @@ import dev.tauri.jsg.core.common.symbol.pointoforigin.PointOfOrigin;
 import dev.tauri.jsgtransporters.common.rings.network.RingsAddressDynamic;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -80,6 +80,15 @@ public class RingsAddressData implements INBTSerializable<CompoundTag>, IAddress
     }
 
     @Override
+    public CompoundTag serializeNBT(net.minecraft.core.HolderLookup.Provider provider) {
+        return serializeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(net.minecraft.core.HolderLookup.Provider provider, CompoundTag compound) {
+        deserializeNBT(compound);
+    }
+
     public CompoundTag serializeNBT() {
         var compound = new CompoundTag();
         compound.put("address", new RingsAddressDynamic(address).serializeNBT());
@@ -87,7 +96,6 @@ public class RingsAddressData implements INBTSerializable<CompoundTag>, IAddress
         return compound;
     }
 
-    @Override
     public void deserializeNBT(CompoundTag compound) {
         address = new RingsAddressDynamic(compound.getCompound("address"));
         symbolsToDisplay = compound.getIntArray("symbolsToDisplay");

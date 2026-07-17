@@ -2,7 +2,7 @@ package dev.tauri.jsgtransporters.common.registry;
 
 import dev.tauri.jsg.core.common.entity.ScheduledTaskType;
 import dev.tauri.jsgtransporters.JSGTransporters;
-import net.minecraftforge.registries.RegistryObject;
+import dev.tauri.jsg.core.common.registry.RegistryObject;
 
 public class JSGTScheduledTaskTypes {
     public static final RegistryObject<ScheduledTaskType> RINGS_SYMBOL_DEACTIVATE = JSGTransporters.REGISTRY_HELPER.scheduledTask().register("rings_symbol_deactivate", () -> new ScheduledTaskType("rings_symbol_deactivate", -1));

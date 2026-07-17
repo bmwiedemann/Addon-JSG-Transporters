@@ -1,5 +1,6 @@
 package dev.tauri.jsgtransporters.common.state.renderer;
 
+import dev.tauri.jsg.core.mapping.JSGMapping;
 import dev.tauri.jsg.core.common.entity.BiomeOverlayInstance;
 import dev.tauri.jsg.core.common.registry.CoreBiomeOverlays;
 import dev.tauri.jsg.core.common.symbol.SymbolInterface;
@@ -18,7 +19,7 @@ public class RingsAncientCPRendererState extends RingsControlPanelRendererState 
         for (BiomeOverlayInstance biomeOverlay : BiomeOverlayInstance.values()) {
             var map = new HashMap<Integer, ResourceLocation>();
             for (int i = 0; i <= 5; i++) {
-                map.put(i, new ResourceLocation(JSGTransporters.MOD_ID, SYMBOL_TEXTURE_BASE + i + biomeOverlay.suffix() + "." + SYMBOL_TEXTURE_END));
+                map.put(i, JSGMapping.rl(JSGTransporters.MOD_ID, SYMBOL_TEXTURE_BASE + i + biomeOverlay.suffix() + "." + SYMBOL_TEXTURE_END));
             }
 
             BIOME_TEXTURE_MAP.put(biomeOverlay, map);

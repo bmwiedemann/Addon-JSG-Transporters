@@ -17,7 +17,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -82,6 +82,15 @@ public class RingsPos implements INBTSerializable<CompoundTag> {
 
 
     @Override
+    public CompoundTag serializeNBT(net.minecraft.core.HolderLookup.Provider provider) {
+        return serializeNBT();
+    }
+
+    @Override
+    public void deserializeNBT(net.minecraft.core.HolderLookup.Provider provider, CompoundTag compound) {
+        deserializeNBT(compound);
+    }
+
     public CompoundTag serializeNBT() {
         CompoundTag compound = new CompoundTag();
         compound.putString("dim", this.dimension.location().toString());
@@ -93,7 +102,6 @@ public class RingsPos implements INBTSerializable<CompoundTag> {
         return compound;
     }
 
-    @Override
     public void deserializeNBT(CompoundTag compound) {
         this.dimension = ResourceKey.create(Registries.DIMENSION, JSGMapping.rl(compound.getString("dim")));
         this.ringsPos = BlockPos.of(compound.getLong("pos"));
